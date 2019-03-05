@@ -1,5 +1,5 @@
 library("googledrive")
-setwd("C:/Users/hongs/zerenhongshen/CIED(1998-2013)2")
+setwd("C:/Users/hongs/zerenhongshen/CIED(1998-2013)")
 
 #  create a list of all files in the working directory with the .csv extension
   files <- list.files(pattern="*.csv")
