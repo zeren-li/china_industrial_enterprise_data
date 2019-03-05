@@ -1,15 +1,28 @@
 library("googledrive")
-library("readxl")
-CIED_1998_1_20000 <- read_xlsx("C:/Users/hongs/zerenhongshen/CIED(1998-2013)/CIED(1998)1-20000.xls")
 setwd("C:/Users/hongs/zerenhongshen/CIED(1998-2013)2")
 
 #  create a list of all files in the working directory with the .csv extension
-files <- list.files(pattern="*.csv")
-require(purrr)
+  files <- list.files(pattern="*.csv")
+
 library(readr)
+library(dplyr)
+library(stringr)
 
-mainDF <- files %>% map_dfr(read_csv) 
+get_data = function(year) {
+  text = str_extract(files, paste0("\\w{4}\\(","(",year,")","\\)\\d+[-]\\d+(.csv)")) %>%
+    na.omit()
+  data = read_csv(text[1])
+  for (i in 2:length(text)) {
+    newdata = read_csv(text[i])
+    data = rbind(data,newdata)
+  }
+  data = data %>% 
+    mutate(year = year)
+}
 
 
-fileIn=read_csv("C:/Users/hongs/zerenhongshen/CIED(1998-2013)2/CIED(1998)1-20000.csv")
+data_2004 = get_data(2004)
+data_2005 = get_data(2005)
+data_2006 = get_data(2006)
+data_2007 = get_data(2007)
 
